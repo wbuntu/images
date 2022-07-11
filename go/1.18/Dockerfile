@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM wbuntu/debian:11
+FROM --platform=$TARGETPLATFORM wbuntu/debian:11
 ARG GOVERSION
 ARG TARGETARCH
 ENV GOROOT=/root/go/root
