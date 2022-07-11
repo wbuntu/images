@@ -1,11 +1,11 @@
 .PHONY: image release
-IMG ?= wbuntu/go-1.18
-VERSION ?= v1.0
+IMG ?= wbuntu/alpine
+VERSION ?= 3.16
 PLATFORM ?= linux/amd64,linux/arm64
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"
-	@docker build --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION) .
+	@docker buildx build --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION) .
 
 release:
 	@echo "Building and pushing all platform image $(IMG):$(VERSION)"
