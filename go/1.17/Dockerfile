@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM wbuntu/debian:11
+FROM wbuntu/alpine:3.15
 ARG GOVERSION
 ARG TARGETARCH
 ENV GOROOT=/root/go/root
