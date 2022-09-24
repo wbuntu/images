@@ -5,5 +5,6 @@ RUN apk add --no-cache git
 RUN git clone https://github.com/ginuerzh/gost.git /gost 
 RUN cd /gost && git checkout $VERSION && cd cmd/gost && go env && go build -v
 FROM alpine:3.15
+ENV TZ=Asia/Shanghai
 COPY --from=builder /gost/cmd/gost/gost /usr/bin/gost
 CMD ["/usr/bin/gost","-C","/etc/gost/config.json"]
