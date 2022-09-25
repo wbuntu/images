@@ -6,20 +6,20 @@
 
 ### 1.1 系统镜像
 
-- [alpine](alpine/README.md)
-- [debian](debian/README.md)
+- [alpine](alpine)
+- [debian](debian)
 
 ### 1.2 开发环境
 
-- [go](go/README.md)
+- [go](go)
 
 ### 1.3 代理工具
 
-- [gost](gost/README.md)
-- [hysteria](hysteria/README.md)
-- [mtproxy](mtproxy/README.md)
-- [shadowray](shadowray/README.md)
-- [tuic](tuic/README.md)
+- [gost](gost)
+- [hysteria](hysteria)
+- [mtproxy](mtproxy)
+- [shadowray](shadowray)
+- [tuic](tuic)
 
 ## 2. 备忘录
 
