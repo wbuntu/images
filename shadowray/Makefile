@@ -1,6 +1,6 @@
 .PHONY: image release
-IMG ?= wbuntu/tuic
-VERSION ?= 0.8.5
+IMG ?= wbuntu/shadowray
+VERSION ?= v0.6
 PLATFORM ?= linux/amd64,linux/arm64
 
 image:
@@ -9,5 +9,5 @@ image:
 
 release:
 	@echo "Building and pushing all platform image $(IMG):$(VERSION)"
-	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION) --push .
+	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION)  --push .
 	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):latest --push .

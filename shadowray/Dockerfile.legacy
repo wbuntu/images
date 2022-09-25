@@ -1,0 +1,15 @@
+FROM centos:7 as builder
+ENV TZ=Asia/Shanghai
+ARG TARGETARCH
+RUN yum makecache && yum install epel-release -y \
+    && yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel git curl -y \
+    && git clone https://github.com/shadowsocks/shadowsocks-libev.git /shadowsocks-libev && cd /shadowsocks-libev && git submodule update --init --recursive \
+    && ./autogen.sh && ./configure && make
+FROM centos:7
+ENV TZ=Asia/Shanghai
+ARG TARGETARCH
+COPY --from=builder /shadowsocks-libev/src/ss-* /usr/bin
+RUN yum makecache && yum install epel-release -y && yum install libev c-ares libsodium mbedtls -y && yum clean all
+RUN curl -L https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.2/v2ray-plugin-linux-$TARGETARCH-v1.3.2.tar.gz | tar -zx \
+    && mv v2ray-plugin_linux_$TARGETARCH /usr/bin/v2ray-plugin
+CMD ["/usr/bin/ss-server","-c","/etc/shadowsocks-libev/config.json"]

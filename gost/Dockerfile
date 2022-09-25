@@ -1,10 +1,8 @@
-FROM golang:1.18-alpine as builder
-ARG VERSION
-ENV CGO_ENABLED=0
-RUN apk add --no-cache git
-RUN git clone https://github.com/ginuerzh/gost.git /gost 
-RUN cd /gost && git checkout $VERSION && cd cmd/gost && go env && go build -v
 FROM alpine:3.15
-ENV TZ=Asia/Shanghai
-COPY --from=builder /gost/cmd/gost/gost /usr/bin/gost
+ENV TZ=Aisa/Shanghai
+ARG VERSION
+ARG TARGETARCH
+RUN apk add --no-cache wget
+COPY download.sh /usr/bin/download.sh
+RUN /usr/bin/download.sh $VERSION $TARGETARCH
 CMD ["/usr/bin/gost","-C","/etc/gost/config.json"]
