@@ -1,10 +1,12 @@
 # shadowray
 
-基于debian 11镜像制作，目前版本为v0.6，shadowsocks-libev v3.3.5 + v2ray-plugin v1.3.2。
+镜像仓库: [https://hub.docker.com/repository/docker/wbuntu/shadowray](https://hub.docker.com/repository/docker/wbuntu/shadowray)
+
+镜像地址: wbuntu/shadowray:v0.6
+
+基于debian:11镜像制作，目前版本为v0.6，shadowsocks-libev v3.3.5 + v2ray-plugin v1.3.2。
 
 下面是配置示例，涉及的域名、path、IP、密码、加密方式等，请替换为自用的参数。
-
-镜像地址：[https://hub.docker.com/repository/docker/wbuntu/shadowray](https://hub.docker.com/repository/docker/wbuntu/shadowray)
 
 ## 服务端
 

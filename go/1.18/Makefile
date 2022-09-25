@@ -1,6 +1,6 @@
 .PHONY: image release
-IMG ?= wbuntu/go-1.18
-VERSION ?= v1.0
+IMG ?= wbuntu/go
+VERSION ?= 1.18.5
 PLATFORM ?= linux/amd64,linux/arm64
 
 image: 

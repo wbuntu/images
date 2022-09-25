@@ -1,6 +1,10 @@
 # mtproxy
 
-来自telegram的mtproto-proxy容器化版本，基于debian 10构建镜像，目前版本为v0.3
+镜像仓库: [https://hub.docker.com/repository/docker/wbuntu/mtproxy](https://hub.docker.com/repository/docker/wbuntu/mtproxy)
+
+镜像地址: wbuntu/mtproxy:v0.3
+
+来自telegram的mtproto-proxy容器化版本，基于debian:10构建镜像，目前版本为v0.3
 
 ## 构建镜像
 
