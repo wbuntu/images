@@ -2,7 +2,7 @@
 
 镜像仓库: [https://hub.docker.com/repository/docker/wbuntu/tuic](https://hub.docker.com/repository/docker/wbuntu/tuic)
 
-镜像地址: wbuntu/hysteria:0.8.5
+镜像地址: wbuntu/tuic:0.8.5
 
 基于alpine:3.15构建镜像，版本与tuic保持一致，目前版本为0.8.5
 
