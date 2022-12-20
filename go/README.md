@@ -4,6 +4,7 @@
 
 镜像地址: 
 
-- wbuntu/go:1.16.15
-- wbuntu/go:1.17.13
-- wbuntu/go:1.18.5
+- wbuntu/go:1.16
+- wbuntu/go:1.17
+- wbuntu/go:1.18
+- wbuntu/go:1.19
