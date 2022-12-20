@@ -49,3 +49,23 @@ docker buildx create --use --name multiarch --platform linux/amd64,linux/arm64
 - BUILDARCH: BUILDPLATFORM 的架构组件
 - BUILDVARIANT: BUILDPLATFORM 的变体组件
 
+### 2.3 交叉编译
+
+buildkitd使用qemu来模拟目标架构执行多架构编译，但是运行效率很低，若编译工具支持交叉编译，可以使用本机架构完成编译，然后将编译出的二进制文件拷贝到目标架构的基础镜像中制作镜像，以go语言为例，如下：
+
+```dockerfile
+# buildkit跨架构编译缓慢，统一使用本机架构进行交叉编译
+FROM --platform=$BUILDPLATFORM wbuntu/golang:1.19 AS builder
+ARG TARGETARCH
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=$TARGETARCH
+WORKDIR /custom-service
+COPY . /custom-service
+RUN make build
+# 编译完成后拷贝到目标架构的基础镜像中
+FROM --platform=$TARGETPLATFORM wbuntu/alpine:3.15
+COPY --from=builder /custom-service/custom-service /usr/bin/custom-service
+CMD ["/usr/bin/custom-service","-c","/etc/custom-service/config.toml"]
+```
+
