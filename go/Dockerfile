@@ -1,5 +1,4 @@
 ARG VERSION
-FROM golang:${VERSION}-alpine
+FROM golang:${VERSION}
 ENV TZ=Asia/Shanghai
-RUN apk add --no-cache bash curl wget vim git gcc make htop
-CMD [ "bash" ]
+RUN apt update && apt install -y curl wget vim git build-essential htop

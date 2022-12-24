@@ -1,6 +1,6 @@
 .PHONY: image release
 IMG ?= wbuntu/go
-VERSION ?= latest
+VERSION ?= 1.19
 PLATFORM ?= linux/amd64,linux/arm64
 TARGETS ?= 1.18 1.19
 
