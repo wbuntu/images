@@ -1,6 +1,6 @@
 .PHONY: image release
 IMG ?= wbuntu/debian
-VERSION = latest
+VERSION ?= latest
 PLATFORM ?= linux/amd64,linux/arm64
 TARGETS ?= 10 11
 

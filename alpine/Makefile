@@ -1,6 +1,6 @@
 .PHONY: image release all
 IMG ?= wbuntu/alpine
-VERSION = latest
+VERSION ?= latest
 PLATFORM ?= linux/amd64,linux/arm64
 TARGETS ?= 3.15 3.16
 
