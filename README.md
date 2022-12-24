@@ -11,7 +11,7 @@
 
 ### 1.2 开发环境
 
-- [go](go)
+- [golang](golang)
 
 ### 1.3 代理工具
 
@@ -27,6 +27,7 @@
 
 - make image: 默认使用docker和本机架构构建镜像
 - make release: 默认使用buildkit构建镜像，默认构建linux/amd64与linux/arm64两种架构（若应用支持）
+- make all: 构建多个release版本
 
 ### 2.2 Docker
 
