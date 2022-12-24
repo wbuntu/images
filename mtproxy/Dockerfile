@@ -1,4 +1,4 @@
-FROM wbuntu/debian:10
+FROM debian:11
 
 VOLUME ["/data"]
 

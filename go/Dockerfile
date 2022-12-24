@@ -1,4 +1,4 @@
 ARG VERSION
-FROM golang:${VERSION}
+FROM golang:${VERSION}-alpine
 ENV TZ=Asia/Shanghai
-RUN apt update && apt install -y curl wget vim git build-essential htop
+RUN apk add --no-cache bash curl wget git make htop tzdata
