@@ -1,7 +1,8 @@
-.PHONY: image release
-IMG ?= wbuntu/debian
-VERSION ?= 11
+.PHONY: image release all
+IMG ?= wbuntu/alpine
+VERSION = latest
 PLATFORM ?= linux/amd64,linux/arm64
+TARGETS ?= 3.15 3.16
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"
@@ -10,4 +11,6 @@ image:
 release:
 	@echo "Building and pushing all platform image $(IMG):$(VERSION)"
 	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION) --push . 
-	
+
+all: 
+	@for var in $(TARGETS);do $(MAKE) VERSION=$$var release;done
