@@ -1,6 +1,6 @@
 .PHONY: image release
 IMG ?= wbuntu/hysteria
-VERSION ?= v1.2.0
+VERSION ?= v1.3.0
 PLATFORM ?= linux/amd64,linux/arm64
 
 image:
