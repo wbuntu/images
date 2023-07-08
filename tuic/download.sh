@@ -16,7 +16,7 @@ else
 fi
 
 mkdir -p /etc/tuic
-wget -q https://github.com/EAimTY/tuic/releases/download/$VERSION/tuic-server-$VERSION-$TUICARCH-linux-musl -O /usr/bin/tuic-server
+wget -q https://github.com/EAimTY/tuic/releases/download/tuic-server-$VERSION/tuic-server-$VERSION-$TUICARCH-unknown-linux-musl -O /usr/bin/tuic-server
 chmod a+x /usr/bin/tuic-server
-wget -q https://github.com/EAimTY/tuic/releases/download/$VERSION/tuic-client-$VERSION-$TUICARCH-linux-musl -O /usr/bin/tuic-client
+wget -q https://github.com/EAimTY/tuic/releases/download/tuic-client-$VERSION/tuic-client-$VERSION-$TUICARCH-unknown-linux-musl -O /usr/bin/tuic-client
 chmod a+x /usr/bin/tuic-client

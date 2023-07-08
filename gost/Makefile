@@ -1,6 +1,6 @@
 .PHONY: image release
 IMG ?= wbuntu/gost
-VERSION ?= v2.11.4
+VERSION ?= v2.11.5
 PLATFORM ?= linux/amd64,linux/arm64
 
 image: 

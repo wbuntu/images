@@ -1,6 +1,6 @@
 .PHONY: image release
 IMG ?= wbuntu/tuic
-VERSION ?= 0.8.5
+VERSION ?= 1.0.0
 PLATFORM ?= linux/amd64,linux/arm64
 
 image:
