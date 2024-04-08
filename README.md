@@ -24,7 +24,7 @@
 ### 1.4 AI
 
 - [next-chat-free](next-chat-free)
-- [ask-free-internet](ask-free-internet)
+- [free-ask-internet](free-ask-internet)
 
 ## 2. 备忘录
 
