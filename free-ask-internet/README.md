@@ -19,7 +19,7 @@ docker run -d --name free-ask-internet -p 3000:3000 --add-host=freegpt35:127.0.0
 这里在容器内执行一个 curl 命令，验证当前的 IP 是否可访问免费的 chatgpt 网页接口，正常情况下可以看到返回的消息中 role 为 assistant 消息 content 输出了 **this is a test!**
 
 ```shell
-➜  ~ docker exec next-chat-free curl -s --location 'http://127.0.0.1:8080/v1/chat/completions' --data '{"model": "gpt-3.5-turbo","messages":[{"role": "user", "content": "Say this is a test!"}]}'
+➜  ~ docker exec free-ask-internet curl -s --location 'http://127.0.0.1:3040/v1/chat/completions' --data '{"model": "gpt-3.5-turbo","messages":[{"role": "user", "content": "Say this is a test!"}]}'
 {"id":"chatcmpl-QXlha2FBbmROaXhpZUFyZUF3ZXNvbWUK","object":"chat.completion","created":0,"model":"gpt-3.5-turbo-0125","usage":{"prompt_tokens":0,"completion_tokens":0,"total_tokens":0},"choices":[{"index":0,"message":{"role":"assistant","content":"This is a test!"},"finish_reason":null}]}
 ```
 
