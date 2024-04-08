@@ -7,4 +7,6 @@ COPY --from=aurora /app /app
 COPY --from=chat /app /app/chatgpt-next-web
 COPY supervisord.conf /etc/supervisord.conf
 COPY supervisor.d /etc/supervisor.d
+EXPOSE 3000
+EXPOSE 8080
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]

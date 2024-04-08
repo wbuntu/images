@@ -12,7 +12,7 @@
 docker run -d --name next-chat-free -p 3000:3000 wbuntu/next-chat-free:v0.0.1
 ```
 
-**验证接口**
+**验证 chatgpt 接口**
 
 这里在容器内执行一个 curl 命令，验证当前的 IP 是否可访问免费的 chatgpt 网页接口，正常情况下可以看到返回的消息中 role 为 assistant 消息 content 输出了 **this is a test!**
 
@@ -34,4 +34,4 @@ docker run -d --name next-chat-free -p 3000:3000 -e CODE=RkdJ1r0+B9zkksS5S wbunt
 ```
 
 > [!NOTE]  
-> chatgpt-web-next 与 aurora 使用了一些同名的环境变量，可以在 ini 文件中单独为程序设置，避免冲突
+> chatgpt-web-next 与 aurora 使用了一些同名的环境变量，可以在 ini 文件中单独为程序设置环境变量，避免冲突产生问题
