@@ -10,4 +10,3 @@ image:
 release:
 	@echo "Building and pushing all platform image $(IMG):$(VERSION)"
 	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):$(VERSION)  --push .
-	@docker buildx build --platform $(PLATFORM) --build-arg VERSION=$(VERSION) -t $(IMG):latest --push .
