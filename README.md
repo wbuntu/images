@@ -21,6 +21,11 @@
 - [shadowray](shadowray)
 - [tuic](tuic)
 
+### 1.4 AI
+
+- [next-chat-free](next-chat-free)
+- [free-ask-internet](free-ask-internet)
+
 ## 2. 备忘录
 
 ### 2.1 Makefile
