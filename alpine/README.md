@@ -4,5 +4,5 @@
 
 镜像地址: 
 
-- wbuntu/alpine:3.15
-- wbuntu/alpine:3.16
+- wbuntu/alpine:3.18
+- wbuntu/alpine:3.19

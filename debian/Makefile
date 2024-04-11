@@ -2,7 +2,7 @@
 IMG ?= wbuntu/debian
 VERSION ?= latest
 PLATFORM ?= linux/amd64,linux/arm64
-TARGETS ?= 10 11
+TARGETS ?= 11 12
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"

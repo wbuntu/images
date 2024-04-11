@@ -2,7 +2,7 @@
 IMG ?= wbuntu/alpine
 VERSION ?= latest
 PLATFORM ?= linux/amd64,linux/arm64
-TARGETS ?= 3.15 3.16
+TARGETS ?= 3.18 3.19
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"

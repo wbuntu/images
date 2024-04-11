@@ -4,7 +4,7 @@
 
 ## 1. 镜像目录
 
-### 1.1 系统镜像
+### 1.1 系统
 
 - [alpine](alpine)
 - [debian](debian)

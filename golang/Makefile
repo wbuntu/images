@@ -2,7 +2,7 @@
 IMG ?= wbuntu/golang
 VERSION ?= 1.19
 PLATFORM ?= linux/amd64,linux/arm64
-TARGETS ?= 1.18 1.19
+TARGETS ?= 1.21 1.22
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"

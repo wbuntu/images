@@ -4,5 +4,5 @@
 
 镜像地址: 
 
-- wbuntu/golang:1.18
-- wbuntu/golang:1.19
+- wbuntu/golang:1.21
+- wbuntu/golang:1.22

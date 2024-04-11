@@ -4,5 +4,5 @@
 
 镜像地址: 
 
-- wbuntu/debian:10
 - wbuntu/debian:11
+- wbuntu/debian:12
