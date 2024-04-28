@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"crypto/rand"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -13,9 +14,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"github.com/google/uuid"
-	"github.com/sashabaranov/go-openai"
 )
 
 func main() {
@@ -35,7 +33,7 @@ func main() {
 }
 
 func handleCompletions(w http.ResponseWriter, r *http.Request) {
-	sessionID := uuid.New().String()
+	sessionID := generateUUID()
 	// 检查请求方法是否为 POST
 	if r.Method != http.MethodPost {
 		httpError(w, http.StatusMethodNotAllowed, fmt.Sprintf("SessionID: %s: Method Not Allowed", sessionID))
@@ -47,7 +45,7 @@ func handleCompletions(w http.ResponseWriter, r *http.Request) {
 		httpError(w, http.StatusBadRequest, fmt.Sprintf("SessionID: %s: Bad Request: read body: %s", sessionID, err))
 		return
 	}
-	request := &openai.ChatCompletionRequest{}
+	request := &OpenAIRequest{}
 	if err := json.Unmarshal(requestData, request); err != nil {
 		httpError(w, http.StatusBadRequest, fmt.Sprintf("SessionID: %s: Bad Request: unmarshal request: %s", sessionID, err))
 		return
@@ -73,7 +71,7 @@ func handleCompletions(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Printf("SessionID: %s: Streaming Stop\n", sessionID)
 	} else {
-		response := &openai.ChatCompletionResponse{
+		response := &OpenAIResponse{
 			ID:      fmt.Sprintf("chatcmpl-%s", sessionID),
 			Created: time.Now().Unix(),
 			Model:   request.Model,
@@ -91,6 +89,20 @@ func handleCompletions(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(responseData)
 	}
+}
+
+func generateUUID() string {
+	uuid := make([]byte, 16)
+	_, err := rand.Read(uuid)
+	if err != nil {
+		fmt.Printf("generateUUID: rand.Read: %s\n", err)
+		os.Exit(-1)
+	}
+	// Set version
+	uuid[6] = (uuid[6] & 0x0f) | 0x40
+	// Set variant
+	uuid[8] = (uuid[8] & 0xbf) | 0x80
+	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:])
 }
 
 func httpError(w http.ResponseWriter, code int, msg string) {
@@ -144,7 +156,7 @@ func (c *client) init() error {
 	return nil
 }
 
-func (c *client) connect(ctx context.Context, request *openai.ChatCompletionRequest) (*CFStreamer, error) {
+func (c *client) connect(ctx context.Context, request *OpenAIRequest) (*CFStreamer, error) {
 	var (
 		req  *http.Request
 		resp *http.Response
@@ -217,7 +229,7 @@ func (c *client) stream(ctx context.Context, w http.ResponseWriter, s *CFStreame
 				}
 				data = strings.TrimPrefix(data, "data: ")
 				data = strings.TrimSuffix(data, "\r")
-				//fmt.Printf("SessionID: %s: Streaming: data: %s\n", s.id, data)
+				fmt.Printf("SessionID: %s: Streaming: data: %s\n", s.id, data)
 				if strings.HasPrefix(data, "[DONE]") {
 					break
 				}
@@ -227,24 +239,24 @@ func (c *client) stream(ctx context.Context, w http.ResponseWriter, s *CFStreame
 					return fmt.Errorf("unmarshal cf response: %s: %s", err, data)
 				}
 				// 构建流式传输结构体
-				response := &openai.ChatCompletionStreamResponse{}
+				response := &OpenAIStreamResponse{}
 				response.ID = s.id
 				response.Created = s.created
 				response.Object = "chat.completion.chunk"
 				response.Model = s.model
-				response.Choices = []openai.ChatCompletionStreamChoice{
+				response.Choices = []StreamChoice{
 					{
 						Index: 0,
-						Delta: openai.ChatCompletionStreamChoiceDelta{
-							Role:    openai.ChatMessageRoleAssistant,
+						Delta: Message{
+							Role:    "assistant",
 							Content: cfStreamResponse.Response,
 						},
-						FinishReason: openai.FinishReasonNull,
+						FinishReason: FinishReasonNull,
 					},
 				}
 				// 无内容时提示停止传输
 				if len(cfStreamResponse.Response) == 0 {
-					response.Choices[0].FinishReason = openai.FinishReasonStop
+					response.Choices[0].FinishReason = FinishReasonStop
 				}
 				jsonData, err := json.Marshal(response)
 				if err != nil {
@@ -261,7 +273,7 @@ func (c *client) stream(ctx context.Context, w http.ResponseWriter, s *CFStreame
 	}
 }
 
-func (c *client) complete(ctx context.Context, request *openai.ChatCompletionRequest, response *openai.ChatCompletionResponse) error {
+func (c *client) complete(ctx context.Context, request *OpenAIRequest, response *OpenAIResponse) error {
 	var (
 		req  *http.Request
 		resp *http.Response
@@ -320,22 +332,74 @@ func (c *client) complete(ctx context.Context, request *openai.ChatCompletionReq
 		return fmt.Errorf("unmarshal response: %s: %s", err, string(cfRespData))
 	}
 	response.Object = "chat.completion"
-	response.Choices = []openai.ChatCompletionChoice{
+	response.Choices = []Choice{
 		{
 			Index: 0,
-			Message: openai.ChatCompletionMessage{
-				Role:    openai.ChatMessageRoleAssistant,
+			Message: Message{
+				Role:    "assistant",
 				Content: cfResponse.Result.Response,
 			},
-			FinishReason: openai.FinishReasonStop,
+			FinishReason: FinishReasonStop,
 		},
 	}
 	return nil
 }
 
+type FinishReason string
+
+const (
+	FinishReasonStop          FinishReason = "stop"
+	FinishReasonLength        FinishReason = "length"
+	FinishReasonFunctionCall  FinishReason = "function_call"
+	FinishReasonToolCalls     FinishReason = "tool_calls"
+	FinishReasonContentFilter FinishReason = "content_filter"
+	FinishReasonNull          FinishReason = "null"
+)
+
+func (r FinishReason) MarshalJSON() ([]byte, error) {
+	if r == FinishReasonNull || r == "" {
+		return []byte("null"), nil
+	}
+	return []byte(`"` + string(r) + `"`), nil // best effort to not break future API changes
+}
+
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
+}
+
+type Choice struct {
+	Index        int          `json:"index"`
+	Message      Message      `json:"message"`
+	FinishReason FinishReason `json:"finish_reason"`
+}
+
+type StreamChoice struct {
+	Index        int          `json:"index"`
+	Delta        Message      `json:"delta"`
+	FinishReason FinishReason `json:"finish_reason"`
+}
+
+type OpenAIRequest struct {
+	Model    string    `json:"model"`
+	Messages []Message `json:"messages"`
+	Stream   bool      `json:"stream"`
+}
+
+type OpenAIResponse struct {
+	ID      string   `json:"id"`
+	Object  string   `json:"object"`
+	Created int64    `json:"created"`
+	Model   string   `json:"model"`
+	Choices []Choice `json:"choices"`
+}
+
+type OpenAIStreamResponse struct {
+	ID      string         `json:"id"`
+	Object  string         `json:"object"`
+	Created int64          `json:"created"`
+	Model   string         `json:"model"`
+	Choices []StreamChoice `json:"choices"`
 }
 
 type CFRequest struct {
