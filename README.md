@@ -25,6 +25,7 @@
 
 - [next-chat-free](next-chat-free)
 - [free-ask-internet](free-ask-internet)
+- [next-chat-cf](next-chat-cf)
 
 ## 2. 备忘录
 
