@@ -22,7 +22,7 @@
 账户 ID 对应的环境变量为 **CF_ACCOUNT_ID**，用户 AI 令牌对应的环境变量为 **CF_API_TOKEN**，这里启动容器将 chatgpt-next-web 服务暴露出来：
 
 ```shell
-docker run -d --name next-chat-free -p 3000:3000 -e CF_ACCOUNT_ID=<ACCOUNT_ID> -e CF_API_TOKEN=<API_TOKEN> wbuntu/next-chat-cf:v0.0.1
+docker run -d --name next-chat-cf -p 3000:3000 -e CF_ACCOUNT_ID=<ACCOUNT_ID> -e CF_API_TOKEN=<API_TOKEN> wbuntu/next-chat-cf:v0.0.1
 ```
 
 **访问网页**
@@ -36,3 +36,15 @@ docker run -d --name next-chat-free -p 3000:3000 -e CF_ACCOUNT_ID=<ACCOUNT_ID> -
 ```shell
 docker run -d --name next-chat-cf -p 3000:3000 -e CODE=RkdJ1r0+B9zkksS5S -e CF_ACCOUNT_ID=<ACCOUNT_ID> -e CF_API_TOKEN=<API_TOKEN> wbuntu/next-chat-cf:v0.0.1
 ```
+
+**访问文本补全接口**
+
+将 8080 端口暴露后，可以访问文本补全接口，如下：
+
+```shell
+docker run -d --name next-chat-cf -p 3000:3000 -p 8080:8080 -e CODE=RkdJ1r0+B9zkksS5S -e CF_ACCOUNT_ID=<ACCOUNT_ID> -e CF_API_TOKEN=<API_TOKEN> wbuntu/next-chat-cf:v0.0.1
+```
+
+假设服务器外网 IP 为 `192.168.1.12`，则 API 服务器地址为：`http://192.168.1.12:8080`，文本补全接口链接为：`http://192.168.1.12:8080/v1/chat/completions`，使用 BotGem 接入时配置如下，密钥不为空即可：
+
+![](img-004.png)
