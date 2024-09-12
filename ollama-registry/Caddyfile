@@ -1,0 +1,30 @@
+:8080 {
+	log {
+		output stdout
+	}
+	# root directory 
+	root * /data/ollama/models
+
+	# match blob request
+	@blobRequests path_regexp blob /v2/([^/]+)/([^/]+)/blobs/sha256:(.+)
+	# rewrite blob request
+	rewrite @blobRequests /blobs/sha256-{re.blob.3}
+	# add Location header on response
+	header @blobRequests {
+		Location {uri}
+	}
+
+	# match manifest request
+	@manifestRequests {
+		path_regexp manifest /v2/([^/]+)/([^/]+)/manifests/(.+)
+	}
+	# rewrite manifest request
+	rewrite @manifestRequests /manifests/registry.ollama.ai/{re.manifest.1}/{re.manifest.2}/{re.manifest.3}
+	# add Content-Type header on response
+	header @manifestRequests {
+		Content-Type application/vnd.docker.distribution.manifest.v2+json
+	}
+
+	# static file server
+	file_server browse
+}
