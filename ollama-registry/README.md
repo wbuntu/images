@@ -4,6 +4,23 @@ A simple offline registry for ollama.
 
 这是一个用 caddy 与 ollama 组合而成的离线模型仓库，支持从 ollama 缓存模型数据，在内网提供模型仓库服务，减少公网网络访问。
 
+```mermaid
+flowchart LR
+    subgraph LAN
+        A0[ollama-registry<br/>192.168.123.3:8080/library/gemma2:2b<br/>192.168.123.3:8080/library/llama3.1:8b]
+        A1[Linux<br/>192.168.123.x]
+        A2[Windows<br/>192.168.123.x]
+        A3[macOS<br/>192.168.123.x]
+    end
+    subgraph WAN
+        roa[registry.ollama.ai<br/>registry.ollama.ai/library/gemma2:2b<br/>registry.ollama.ai/library/llama3.1:8b]
+    end
+    A0 -.-> roa
+    A1 ---> A0
+    A2 ---> A0
+    A3 ---> A0
+```
+
 ## 部署
 
 执行以下命令启动服务：
@@ -42,7 +59,7 @@ wbuntu/ollama-registry:v0.1
 
 **/data/caddy** 中保存了 caddy 配置文件，我们可以修改配置来使用证书和域名访问仓库，**/data/ollama** 中保存了 ollama 的模型数据。
 
-## 使用
+## 缓存模型
 
 进入 ollama-registry 容器拉取所需的模型，例如 **gemma2:2b**：
 
@@ -68,7 +85,9 @@ gemma2:2b	8ccf136fdd52	1.6 GB	5 seconds ago
 
 ![alt text](img-002.png)
 
-然后在同子网的其他机器上访问本机 8080 端口拉取镜像，假设本机地址为 192.168.123.3，如下：
+## 拉取模型
+
+在同子网的其他机器上访问 ollama-registry 宿主机 8080 端口拉取镜像，如下：
 
 ```shell
 ➜  ~ ollama pull --insecure http://192.168.123.3:8080/library/gemma2:2b
@@ -91,4 +110,15 @@ ollama 模型名遵循与 docker 容器镜像相似的命名规则，官方维�
 1. gemma2:2b => registry.ollama.ai/library/gemma2:2b
 2. llama3.1:8b => registry.ollama.ai/library/llama3.1:8b
 
-对于这些标准镜像，使用离线仓库访问时需要添加 library 前缀，如：http://192.168.123.3:8080/library/gemma2:2b。
+对于这些标准镜像，使用离线仓库访问时需要添加 library 前缀，如：http://192.168.123.3:8080/library/gemma2:2b、http://192.168.123.3:8080/library/llama3.1:8b。
+
+我们可以使用 cp 命令将模型重命名，方便后续使用：
+
+```shell
+➜  ~ ollama cp 192.168.123.3:8080/library/gemma2:2b gemma2:2b
+copied '192.168.123.3:8080/library/gemma2:2b' to 'gemma2:2b'
+➜  ~ ollama list
+NAME                                	ID          	SIZE  	MODIFIED
+gemma2:2b                           	8ccf136fdd52	1.6 GB	1 second ago
+192.168.123.3:8080/library/gemma2:2b	8ccf136fdd52	1.6 GB	45 minutes ago
+```
