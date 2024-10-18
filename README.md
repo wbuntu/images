@@ -6,31 +6,34 @@
 
 ### 1.1 系统
 
-- [alpine](alpine)
-- [debian](debian)
+- [alpine](os/alpine)
+- [debian](os/debian)
 
 ### 1.2 开发环境
 
-- [golang](golang)
+- [golang](dev/golang)
 
 ### 1.3 代理工具
 
-- [gost](gost)
-- [hysteria](hysteria)
-- [mtproxy](mtproxy)
-- [shadowray](shadowray)
-- [tuic](tuic)
+- [gost](proxy/gost)
+- [hysteria](proxy/hysteria)
+- [mtproxy](proxy/mtproxy)
+- [shadowray](proxy/shadowray)
 
 ### 1.4 AI
 
-- [next-chat-free](next-chat-free)
-- [free-ask-internet](free-ask-internet)
-- [next-chat-cf](next-chat-cf)
-- [ollama-registry](ollama-registry)
+- [next-chat-free](ai/next-chat-free)
+- [free-ask-internet](ai/free-ask-internet)
+- [next-chat-cf](ai/next-chat-cf)
+- [ollama-registry](ai/ollama-registry)
 
-### 1.4 其他
+### 1.5 其他
 
-- [caddy](caddy)
+- [caddy](others/caddy)
+
+### 1.6 废弃
+
+- [tuic](deprecated/tuic)
 
 ## 2. 备忘录
 
