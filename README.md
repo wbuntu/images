@@ -28,6 +28,10 @@
 - [next-chat-cf](next-chat-cf)
 - [ollama-registry](ollama-registry)
 
+### 1.4 其他
+
+- [caddy](caddy)
+
 ## 2. 备忘录
 
 ### 2.1 Makefile
@@ -38,12 +42,18 @@
 
 ### 2.2 Docker
 
-文档链接：[Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
+文档链接：[Dockerfile reference](https://docs.docker.com/build/building/multi-platform/)
 
 **创建buildx构建实例**
 
 ```	shell
 docker buildx create --use --name multiarch --platform linux/amd64,linux/arm64
+```
+
+**安装QEMU**
+
+```shell
+docker run --privileged --rm tonistiigi/binfmt --install all
 ```
 
 **多架构变量**
