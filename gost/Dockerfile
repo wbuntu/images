@@ -1,4 +1,4 @@
-FROM wbuntu/alpine:3.15
+FROM wbuntu/alpine:3.20
 ARG VERSION
 ARG TARGETARCH
 COPY download.sh /usr/bin/download.sh

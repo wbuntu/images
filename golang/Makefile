@@ -1,8 +1,8 @@
 .PHONY: image release
 IMG ?= wbuntu/golang
-VERSION ?= 1.19
+VERSION ?= latest
 PLATFORM ?= linux/amd64,linux/arm64
-TARGETS ?= 1.21 1.22
+TARGETS ?= 1.22 1.23
 
 image: 
 	@echo "Building image $(IMG):$(VERSION)"
