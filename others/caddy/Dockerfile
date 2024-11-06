@@ -1,8 +1,13 @@
-ARG TARGETARCH
 ARG VERSION
-
 FROM --platform=$BUILDPLATFORM caddy:${VERSION}-builder AS builder
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} xcaddy build ${VERSION} \
+
+ARG VERSION
+ARG TARGETARCH
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=${TARGETARCH}
+ENV CADDY_VERSION=v${VERSION}
+RUN xcaddy build ${CADDY_VERSION} \
 --with github.com/mholt/caddy-webdav
 
 FROM --platform=$TARGETPLATFORM caddy:${VERSION}
