@@ -30,6 +30,7 @@
 ### 1.5 其他
 
 - [caddy](others/caddy)
+- [n8n](others/n8n)
 
 ### 1.6 废弃
 
