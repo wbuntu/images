@@ -10,14 +10,14 @@ GOSTARCH=unknown
 if [[ "$TARGETARCH" == "amd64"  ]];then
     GOSTARCH=amd64
 elif [[ "$TARGETARCH" == "arm64" ]];then
-    GOSTARCH=armv8
+    GOSTARCH=arm64
 else
     echo "unknown TARGETARCH $TARGETARCH"
     exit -1
 fi
 
 mkdir -p /etc/gost
-wget -q https://github.com/ginuerzh/gost/releases/download/$VERSION/gost-linux-$GOSTARCH-$GOSTVERSION.gz -O gost.gz
-gunzip gost.gz
+wget -q https://github.com/ginuerzh/gost/releases/download/$VERSION/gost_${GOSTVERSION}_linux_${GOSTARCH}.tar.gz -O gost.tar.gz
+tar -zxvf gost.tar.gz
 mv gost /usr/bin/gost
 chmod a+x /usr/bin/gost
