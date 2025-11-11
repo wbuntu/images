@@ -1,7 +1,7 @@
 ARG VERSION
 FROM debian:$VERSION
 ENV TZ=Asia/Shanghai
-RUN apt update && apt install -y zsh curl wget git make htop
+RUN apt update && apt install -y zsh curl jq wget git git-lfs make htop
 RUN sed -i 's#^\(root:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\).*#\1/usr/bin/zsh#' /etc/passwd \
     && wget -qO /tmp/omz_install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh \
     && sh /tmp/omz_install.sh --unattended || true \
