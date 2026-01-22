@@ -12,13 +12,13 @@
 ### 1.2 开发环境
 
 - [golang](dev/golang)
+- [node](dev/node)
 
 ### 1.3 代理工具
 
 - [gost](proxy/gost)
-- [hysteria](proxy/hysteria)
-- [mtproxy](proxy/mtproxy)
 - [shadowray](proxy/shadowray)
+- [mtproxy](proxy/mtproxy)
 
 ### 1.4 AI
 
@@ -27,14 +27,15 @@
 - [next-chat-cf](ai/next-chat-cf)
 - [ollama-registry](ai/ollama-registry)
 
-### 1.5 其他
+### 1.5 通用应用
 
-- [caddy](others/caddy)
-- [n8n](others/n8n)
+- [caddy](apps/caddy)
 
-### 1.6 废弃
+### 1.6 归档
 
-- [tuic](deprecated/tuic)
+- [tuic](archive/tuic)
+- [hysteria](archive/hysteria)
+- [n8n](archive/n8n)
 
 ## 2. 备忘录
 
