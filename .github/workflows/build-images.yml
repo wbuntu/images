@@ -1,0 +1,122 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+jobs:
+  # 第一步：构建系统镜像
+  build-os:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: os/alpine
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          cd ${{ matrix.dir }}
+          if grep -q "^all:" Makefile 2>/dev/null; then
+            echo "Building all versions..."
+            make all
+          else
+            echo "Building release..."
+            make release
+          fi
+
+  # 第二步：构建开发环境镜像
+  build-dev:
+    runs-on: ubuntu-latest
+    needs: build-os
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: dev/golang
+          - dir: dev/node
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          cd ${{ matrix.dir }}
+          if grep -q "^all:" Makefile 2>/dev/null; then
+            echo "Building all versions..."
+            make all
+          else
+            echo "Building release..."
+            make release
+          fi
+
+  # 第三步：构建其他镜像
+  build-others:
+    runs-on: ubuntu-latest
+    needs: build-dev
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: proxy/gost
+          - dir: proxy/shadowray
+          - dir: proxy/mtproxy
+          - dir: apps/caddy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          cd ${{ matrix.dir }}
+          if grep -q "^all:" Makefile 2>/dev/null; then
+            echo "Building all versions..."
+            make all
+          else
+            echo "Building release..."
+            make release
+          fi
